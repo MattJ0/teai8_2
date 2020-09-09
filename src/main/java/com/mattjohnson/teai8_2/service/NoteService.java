@@ -1,21 +1,21 @@
 package com.mattjohnson.teai8_2.service;
 
-import com.mattjohnson.teai8_2.model.Note;
+import com.mattjohnson.teai8_2.dto.NoteDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface NoteService {
 
-    Note addNote(Note note);
+    boolean addNote(NoteDto noteDto);
 
-    boolean editNote(Integer id, Note note);
+    boolean editNote(NoteDto noteDto);
 
-    Optional<Note> deleteNote(Integer id);
+    boolean deleteNote(Integer id);
 
-    Optional<Note> findNoteById(Integer id);
+    Optional<NoteDto> findNoteById(Integer id);
 
-    List<Note> findNotesByUserId(Integer id);
+    List<NoteDto> findNotesByUserId(Integer id);
 
 
 }

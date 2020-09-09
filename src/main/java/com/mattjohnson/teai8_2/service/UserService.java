@@ -1,17 +1,18 @@
 package com.mattjohnson.teai8_2.service;
 
-import com.mattjohnson.teai8_2.model.User;
+import com.mattjohnson.teai8_2.dto.UserDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    User addUser(User user);
+    boolean addUser(UserDto userDto);
 
-    User deleteUser(User user);
+    boolean deleteUser(Integer id);
 
-    List<User> findAllUsers();
+    List<UserDto> findAllUsers();
 
-    Optional<User> findUserById();
+    Optional<UserDto> findUserById(Integer id);
+
 }

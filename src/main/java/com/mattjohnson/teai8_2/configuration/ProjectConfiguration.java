@@ -1,5 +1,6 @@
 package com.mattjohnson.teai8_2.configuration;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.hateoas.client.LinkDiscoverer;
@@ -17,8 +18,9 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration {
+public class ProjectConfiguration {
 
+    //Swagger
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -28,11 +30,18 @@ public class SwaggerConfiguration {
                 .build();
     }
 
+    //HATEOAS
     @Bean
     public LinkDiscoverers discoverers() {
         List<LinkDiscoverer> plugins = new ArrayList<>();
         plugins.add(new CollectionJsonLinkDiscoverer());
         return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
 
+    }
+
+    //MAPPER
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

@@ -1,16 +1,11 @@
-package com.mattjohnson.teai8_2.model;
+package com.mattjohnson.teai8_2.entity;
 
+import com.mattjohnson.teai8_2.dto.NoteDto;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 
@@ -38,8 +33,13 @@ public class Note {
 
     private boolean isRemoved;
 
-    public Note(String title, String content) {
-        this.title = title;
-        this.content = content;
+    @ManyToOne
+    private User user;
+
+    public Note(NoteDto noteDto) {
+        this.title = noteDto.getTitle();
+        this.content = noteDto.getContent();
+        this.creationDate = ZonedDateTime.now();
+        this.user.setId(noteDto.getUserId());
     }
 }

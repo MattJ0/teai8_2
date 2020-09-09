@@ -1,14 +1,13 @@
-package com.mattjohnson.teai8_2.model;
+package com.mattjohnson.teai8_2.entity;
 
+import com.mattjohnson.teai8_2.dto.UserDto;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Entity
@@ -28,11 +27,14 @@ public class User {
     @Email()
     private String email;
 
-    @OneToMany
+    private ZonedDateTime creationDate;
+
+    @OneToMany(mappedBy = "user")
     private Set<Note> noteSet;
 
-    public User(String name, String email) {
-        this.name = name;
-        this.email = email;
+    public User(UserDto userDto) {
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
+        this.creationDate = ZonedDateTime.now();
     }
 }
