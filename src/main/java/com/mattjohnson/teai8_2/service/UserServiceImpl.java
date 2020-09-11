@@ -1,7 +1,6 @@
 package com.mattjohnson.teai8_2.service;
 
 import com.mattjohnson.teai8_2.dto.UserDto;
-import com.mattjohnson.teai8_2.entity.Note;
 import com.mattjohnson.teai8_2.entity.User;
 import com.mattjohnson.teai8_2.repository.UserRepo;
 import org.modelmapper.ModelMapper;
@@ -19,11 +18,14 @@ public class UserServiceImpl implements UserService, IModelMapper<User, UserDto>
 
     private final ModelMapper modelMapper;
 
+    private NoteService noteService;
+
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepo userRepo, ModelMapper modelMapper, NoteService noteService) {
         this.userRepo = userRepo;
         this.modelMapper = modelMapper;
+        this.noteService = noteService;
     }
 
     @Override
@@ -36,9 +38,12 @@ public class UserServiceImpl implements UserService, IModelMapper<User, UserDto>
     }
 
 
+    //TODO usunięcie usera wraz z notatkami
     @Override
     public boolean deleteUser(Integer id) {
-        if (userRepo.existsById(id)) {
+        Optional<User> user = userRepo.findById(id);
+        if (user.isPresent()) {
+            noteService.deleteAllNotesByUserId(id);
             userRepo.deleteById(id);
             return true;
         }

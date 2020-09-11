@@ -2,6 +2,7 @@ package com.mattjohnson.teai8_2.entity;
 
 import com.mattjohnson.teai8_2.dto.NoteDto;
 import lombok.Data;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 
@@ -12,6 +13,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(name = "notes")
 @Data
+@DynamicUpdate
 public class Note {
 
     @Id
@@ -25,7 +27,7 @@ public class Note {
     @Type(type = "text")
     private String content;
 
-    private ZonedDateTime creationDate;
+    private ZonedDateTime creationDate = ZonedDateTime.now();
 
     private ZonedDateTime modificationDate;
 

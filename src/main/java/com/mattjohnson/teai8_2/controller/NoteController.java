@@ -31,32 +31,33 @@ public class NoteController {
 
     @GetMapping
     public ResponseEntity<CollectionModel<NoteModel>> getAllNotes() {
-        return
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<NoteModel>> getNotesByUserId() {
-
+    @GetMapping("/userId/{id}")
+    public ResponseEntity<CollectionModel<NoteModel>> getNotesByUserId(@PathVariable Integer id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<EntityModel<NoteModel>> getNoteById() {
-
+    @GetMapping("/{id}")
+    public ResponseEntity<EntityModel<NoteModel>> getNoteById(@PathVariable Integer id) {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity addNote() {
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping
-    public ResponseEntity updateNote() {
-
-    }
+//    public ResponseEntity updateNote() {
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+//
 
     @DeleteMapping
     public ResponseEntity deleteNote() {
-
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -10,4 +10,7 @@ import java.util.List;
 public interface NoteRepo extends JpaRepository<Note, Integer> {
 
     List<Note> findAllByUserId(Integer userId);
+
+//    void deleteAllByUser(Integer userId);
+
 }

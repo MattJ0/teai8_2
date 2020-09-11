@@ -9,9 +9,11 @@ public interface NoteService {
 
     boolean addNote(NoteDto noteDto);
 
-    boolean editNote(NoteDto noteDto);
+    boolean updateNote(NoteDto noteDto);
 
     boolean deleteNote(Integer id);
+
+    boolean deleteAllNotesByUserId(Integer id);
 
     Optional<NoteDto> findNoteById(Integer id);
 

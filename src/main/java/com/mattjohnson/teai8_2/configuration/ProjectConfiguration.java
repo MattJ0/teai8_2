@@ -20,7 +20,7 @@ import java.util.List;
 @EnableSwagger2
 public class ProjectConfiguration {
 
-    //Swagger
+    //SWAGGER
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

@@ -1,7 +1,13 @@
 package com.mattjohnson.teai8_2.dto;
 
-import com.mattjohnson.teai8_2.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mattjohnson.teai8_2.entity.Note;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Data
 public class UserDto {
@@ -12,20 +18,19 @@ public class UserDto {
 
     //dodać logger @Slf4j
 
+    @JsonIgnore
     private Integer id;
 
+    @NotBlank(message = "Name is mandatory and cannot be blank.")
+    @Length(min = 8, max = 25, message = "The required number of characters in the name is 8-25")
     private String name;
 
+    @NotBlank(message = "Email is mandatory and cannot be blank.")
+    @Email()
     private String email;
 
-    public UserDto(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.email = user.getEmail();
-    }
+    @JsonIgnore
+    private Set<Note> noteSet;
 
-    public UserDto(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
+
 }

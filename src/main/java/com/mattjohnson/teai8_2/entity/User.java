@@ -27,14 +27,9 @@ public class User {
     @Email()
     private String email;
 
-    private ZonedDateTime creationDate;
+    private ZonedDateTime creationDate = ZonedDateTime.now();
 
     @OneToMany(mappedBy = "user")
     private Set<Note> noteSet;
 
-    public User(UserDto userDto) {
-        this.name = userDto.getName();
-        this.email = userDto.getEmail();
-        this.creationDate = ZonedDateTime.now();
-    }
 }
