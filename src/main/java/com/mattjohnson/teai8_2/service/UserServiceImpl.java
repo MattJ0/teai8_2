@@ -6,6 +6,7 @@ import com.mattjohnson.teai8_2.repository.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,13 +39,13 @@ public class UserServiceImpl implements UserService, IModelMapper<User, UserDto>
     }
 
 
-    //TODO usunięcie usera wraz z notatkami
+    @Transactional
     @Override
     public boolean deleteUser(Integer id) {
-        Optional<User> user = userRepo.findById(id);
+        Optional<User> user = userRepo.findByIdAndRemovedIsFalse(id);
         if (user.isPresent()) {
             noteService.deleteAllNotesByUserId(id);
-            userRepo.deleteById(id);
+            user.get().setRemoved(true);
             return true;
         }
         return false;
@@ -52,13 +53,13 @@ public class UserServiceImpl implements UserService, IModelMapper<User, UserDto>
 
     @Override
     public List<UserDto> findAllUsers() {
-        List<User> users = userRepo.findAll();
+        List<User> users = userRepo.findAllByRemovedIsFalse();
         return users.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     public Optional<UserDto> findUserById(Integer id) {
-        Optional<User> user = userRepo.findById(id);
+        Optional<User> user = userRepo.findByIdAndRemovedIsFalse(id);
         return user.map(this::convertToDto);
     }
 

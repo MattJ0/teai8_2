@@ -32,6 +32,9 @@ public class User {
 
     private ZonedDateTime creationDate = ZonedDateTime.now();
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean removed;
+
     @OneToMany(mappedBy = "user")
     private Set<Note> noteSet;
 

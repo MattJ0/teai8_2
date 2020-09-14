@@ -3,10 +3,12 @@ package com.mattjohnson.teai8_2.service;
 import com.mattjohnson.teai8_2.dto.NoteDto;
 import com.mattjohnson.teai8_2.entity.Note;
 import com.mattjohnson.teai8_2.repository.NoteRepo;
+import org.hibernate.annotations.BatchSize;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -41,17 +43,17 @@ public class NoteServiceImpl implements NoteService, IModelMapper<Note, NoteDto>
     }
 
 
-    //TODO
+    @Transactional
     @Override
-    public boolean updateNote(NoteDto noteDto) {
-        Optional<Note> note = noteRepo.findById(noteDto.getId());
+    public boolean updateNote(NoteDto noteDto, Integer id) {
+        Optional<Note> note = noteRepo.findById(id);
         if (note.isPresent()) {
             if (note.get().getUser().getId().equals(noteDto.getUserId())) {
                 Note update = note.get();
                 update.setTitle(noteDto.getTitle());
                 update.setContent(noteDto.getContent());
                 update.setModificationDate(ZonedDateTime.now());
-                noteRepo.save(update);
+//                noteRepo.save(update);
                 return true;
             }
             return false;
@@ -59,6 +61,7 @@ public class NoteServiceImpl implements NoteService, IModelMapper<Note, NoteDto>
         return false;
     }
 
+    @Transactional
     @Override
     public boolean deleteNote(Integer id) {
         Optional<Note> optionalNote = noteRepo.findById(id);
@@ -66,19 +69,20 @@ public class NoteServiceImpl implements NoteService, IModelMapper<Note, NoteDto>
             Note note = optionalNote.get();
             note.setRemoved(true);
             note.setRemovalDate(ZonedDateTime.now());
-            noteRepo.save(note);
             return true;
         }
         return false;
     }
 
+    @Transactional
+    @BatchSize(size = 25)
     @Override
     public boolean deleteAllNotesByUserId(Integer id) {
-        List<Note> noteList = noteRepo.findAllByUserId(id);
+        List<Note> noteList = noteRepo.findAllByUserIdAndRemovedIsFalse(id);
         if (noteList.isEmpty()) {
             return false;
         }
-        noteList.forEach(note -> deleteNote(note.getId()));
+        noteRepo.setRemovedByUser(id, ZonedDateTime.now());
         return true;
     }
 
@@ -91,7 +95,7 @@ public class NoteServiceImpl implements NoteService, IModelMapper<Note, NoteDto>
 
     @Override
     public List<NoteDto> findNotesByUserId(Integer id) {
-        List<Note> notes = noteRepo.findAllByUserIdAndRemoved(id, false);
+        List<Note> notes = noteRepo.findAllByUserIdAndRemovedIsFalse(id);
         return notes.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 

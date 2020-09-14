@@ -16,12 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserDto {
 
-    // w DTO odbicie encji (w zakresie udostęþnianych danych), mapowanie w serwisie
-    // Output - z serwisu do controllera trafia DTO i jest przerabiane przez assembler zasobów
-    // Input - z controllera do serwisu jest przekazywane DTO, serwis mapuje na encję i przekazuje do repo
-
-    //dodać logger @Slf4j
-
     @JsonIgnore
     private Integer id;
 

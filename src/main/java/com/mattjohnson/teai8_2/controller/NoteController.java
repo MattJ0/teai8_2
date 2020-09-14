@@ -62,9 +62,9 @@ public class NoteController {
         } else return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping
-    public ResponseEntity updateNote(@Validated @RequestBody NoteDto noteDto) {
-        boolean update = noteService.updateNote(noteDto);
+    @PutMapping("/{id}")
+    public ResponseEntity updateNote(@PathVariable Integer id, @Validated @RequestBody NoteDto noteDto) {
+        boolean update = noteService.updateNote(noteDto, id);
         if (update) {
             return new ResponseEntity<>("Note was updated", HttpStatus.OK);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

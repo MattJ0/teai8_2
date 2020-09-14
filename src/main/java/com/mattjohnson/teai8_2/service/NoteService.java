@@ -9,7 +9,7 @@ public interface NoteService {
 
     boolean addNote(NoteDto noteDto);
 
-    boolean updateNote(NoteDto noteDto);
+    boolean updateNote(NoteDto noteDto, Integer id);
 
     boolean deleteNote(Integer id);
 

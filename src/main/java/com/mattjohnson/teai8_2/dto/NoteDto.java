@@ -1,5 +1,6 @@
 package com.mattjohnson.teai8_2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class NoteDto {
 
+    @JsonIgnore
     private Integer id;
 
     @NotBlank(message = "Title cannot be blank.")
