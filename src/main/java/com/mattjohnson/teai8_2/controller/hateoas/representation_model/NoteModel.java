@@ -1,4 +1,4 @@
-package com.mattjohnson.teai8_2.hateoas.representation_model;
+package com.mattjohnson.teai8_2.controller.hateoas.representation_model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

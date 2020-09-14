@@ -2,7 +2,7 @@ Rest API for Notepad online - allows you to create user notes, save them in the 
 
 - Spring Boot
 - Hibernate
-- PostgreSQL
+- PostgreSQL (via Docker image)
 - Lombok
 ------------
 

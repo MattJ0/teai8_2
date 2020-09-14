@@ -1,7 +1,8 @@
 package com.mattjohnson.teai8_2.entity;
 
-import com.mattjohnson.teai8_2.dto.UserDto;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -12,7 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
     @Id

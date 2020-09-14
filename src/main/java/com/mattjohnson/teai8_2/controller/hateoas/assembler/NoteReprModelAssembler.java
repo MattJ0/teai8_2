@@ -1,12 +1,13 @@
-package com.mattjohnson.teai8_2.hateoas.assembler;
+package com.mattjohnson.teai8_2.controller.hateoas.assembler;
 
 import com.mattjohnson.teai8_2.controller.NoteController;
-import com.mattjohnson.teai8_2.controller.UserController;
+import com.mattjohnson.teai8_2.controller.hateoas.representation_model.NoteModel;
 import com.mattjohnson.teai8_2.dto.NoteDto;
-import com.mattjohnson.teai8_2.hateoas.representation_model.NoteModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -28,9 +29,10 @@ public class NoteReprModelAssembler extends RepresentationModelAssemblerSupport<
                         .getNoteById(noteDto.getId()))
                 .withSelfRel());
 
+
         noteModel = createModelWithId(noteDto.getId(), noteDto);
         noteModel.setId(noteDto.getId());
-        noteModel.setTitle(noteModel.getTitle());
+        noteModel.setTitle(noteDto.getTitle());
         noteModel.setContent(noteDto.getContent());
         noteModel.setUserId(noteDto.getUserId());
         return noteModel;
@@ -39,8 +41,8 @@ public class NoteReprModelAssembler extends RepresentationModelAssemblerSupport<
     @Override
     public CollectionModel<NoteModel> toCollectionModel(Iterable<? extends NoteDto> noteDtos) {
         CollectionModel<NoteModel> noteModels = super.toCollectionModel(noteDtos);
-
-        noteModels.add(linkTo(methodOn(UserController.class).getUsers()).withSelfRel());
+        Optional<NoteModel> noteModel = noteModels.getContent().stream().findFirst();
+        noteModel.ifPresent(model -> noteModels.add(linkTo(methodOn(NoteController.class).getNotesByUserId(model.getUserId())).withSelfRel()));
 
         return noteModels;
     }

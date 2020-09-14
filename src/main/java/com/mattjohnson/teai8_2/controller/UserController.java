@@ -1,8 +1,8 @@
 package com.mattjohnson.teai8_2.controller;
 
+import com.mattjohnson.teai8_2.controller.hateoas.assembler.UserReprModelAssembler;
+import com.mattjohnson.teai8_2.controller.hateoas.representation_model.UserModel;
 import com.mattjohnson.teai8_2.dto.UserDto;
-import com.mattjohnson.teai8_2.hateoas.assembler.UserReprModelAssembler;
-import com.mattjohnson.teai8_2.hateoas.representation_model.UserModel;
 import com.mattjohnson.teai8_2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;

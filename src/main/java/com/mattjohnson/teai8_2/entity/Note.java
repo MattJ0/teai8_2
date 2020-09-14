@@ -1,7 +1,8 @@
 package com.mattjohnson.teai8_2.entity;
 
-import com.mattjohnson.teai8_2.dto.NoteDto;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +13,9 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "notes")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @DynamicUpdate
 public class Note {
 
@@ -33,15 +36,10 @@ public class Note {
 
     private ZonedDateTime removalDate;
 
-    private boolean isRemoved;
+    @Column(columnDefinition = "boolean default false")
+    private boolean removed;
 
     @ManyToOne
     private User user;
 
-    public Note(NoteDto noteDto) {
-        this.title = noteDto.getTitle();
-        this.content = noteDto.getContent();
-        this.creationDate = ZonedDateTime.now();
-        this.user.setId(noteDto.getUserId());
-    }
 }

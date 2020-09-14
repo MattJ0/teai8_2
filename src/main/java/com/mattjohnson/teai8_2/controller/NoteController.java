@@ -1,14 +1,18 @@
 package com.mattjohnson.teai8_2.controller;
 
-import com.mattjohnson.teai8_2.hateoas.assembler.NoteReprModelAssembler;
-import com.mattjohnson.teai8_2.hateoas.representation_model.NoteModel;
+import com.mattjohnson.teai8_2.controller.hateoas.assembler.NoteReprModelAssembler;
+import com.mattjohnson.teai8_2.controller.hateoas.representation_model.NoteModel;
+import com.mattjohnson.teai8_2.dto.NoteDto;
 import com.mattjohnson.teai8_2.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/notes")
@@ -29,35 +33,50 @@ public class NoteController {
 //        return new ResponseEntity<>("Hello", HttpStatus.OK);
 //    }
 
-    @GetMapping
-    public ResponseEntity<CollectionModel<NoteModel>> getAllNotes() {
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<CollectionModel<NoteModel>> getAllNotes() {
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @GetMapping("/userId/{id}")
     public ResponseEntity<CollectionModel<NoteModel>> getNotesByUserId(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<NoteDto> noteDtoList = noteService.findNotesByUserId(id);
+        CollectionModel<NoteModel> noteDtoCollectionModel = noteReprModelAssembler.toCollectionModel(noteDtoList);
+        if (noteDtoCollectionModel.hasLinks()) {
+            return new ResponseEntity<>(noteDtoCollectionModel, HttpStatus.OK);
+        } else return new ResponseEntity("User with id:" + id + " not exists", HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EntityModel<NoteModel>> getNoteById(@PathVariable Integer id) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<NoteModel> getNoteById(@PathVariable Integer id) {
+        Optional<NoteDto> noteDto = noteService.findNoteById(id);
+        return noteDto.map(dto -> new ResponseEntity<>(noteReprModelAssembler.toModel(dto), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity addNote() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity addNote(@Validated @RequestBody NoteDto noteDto) {
+        boolean add = noteService.addNote(noteDto);
+        if (add) {
+            return new ResponseEntity<>("Note was added", HttpStatus.OK);
+        } else return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
-    @PatchMapping
-//    public ResponseEntity updateNote() {
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
+    @PutMapping
+    public ResponseEntity updateNote(@Validated @RequestBody NoteDto noteDto) {
+        boolean update = noteService.updateNote(noteDto);
+        if (update) {
+            return new ResponseEntity<>("Note was updated", HttpStatus.OK);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
-    @DeleteMapping
-    public ResponseEntity deleteNote() {
-        return new ResponseEntity<>(HttpStatus.OK);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteNote(@PathVariable Integer id) {
+        boolean delete = noteService.deleteNote(id);
+        if (delete) {
+            return new ResponseEntity<>("Note was deleted", HttpStatus.OK);
+        } else return new ResponseEntity<>("Note not found", HttpStatus.NOT_FOUND);
     }
 
 
