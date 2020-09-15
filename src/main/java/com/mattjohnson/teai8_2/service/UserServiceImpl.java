@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService, IModelMapper<User, UserDto>
 
     @Override
     public boolean addUser(UserDto userDto) {
-        if (userRepo.existsUserByEmail(userDto.getEmail()) || userRepo.existsUserByName(userDto.getName())) {
+        if (userRepo.existsUserByNameOrEmail(userDto.getName(), userDto.getEmail())) {
             return false;
         }
         userRepo.save(convertToEntity(userDto));

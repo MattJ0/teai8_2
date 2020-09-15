@@ -16,7 +16,7 @@ public interface UserRepo extends JpaRepository<User, Integer> {
 
     List<User> findAllByRemovedIsFalse();
 
-    boolean existsUserByName(String name);
+    boolean existsUserByNameOrEmail(String name, String email);
 
     boolean existsUserByEmail(String email);
 

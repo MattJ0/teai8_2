@@ -3,6 +3,7 @@ package com.mattjohnson.teai8_2.controller.hateoas.assembler;
 import com.mattjohnson.teai8_2.controller.UserController;
 import com.mattjohnson.teai8_2.controller.hateoas.representation_model.UserModel;
 import com.mattjohnson.teai8_2.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Component
 public class UserReprModelAssembler extends RepresentationModelAssemblerSupport<UserDto, UserModel> {
 
+    @Autowired
+    private NoteReprModelAssembler noteReprModelAssembler;
 
     public UserReprModelAssembler() {
         super(UserController.class, UserModel.class);
@@ -37,6 +40,7 @@ public class UserReprModelAssembler extends RepresentationModelAssemblerSupport<
         userModel.setId(userDto.getId());
         userModel.setEmail(userDto.getEmail());
         userModel.setName(userDto.getName());
+        userModel.setNotes(noteReprModelAssembler.toCollectionModel(userDto.getNoteSet()));
         return userModel;
     }
 

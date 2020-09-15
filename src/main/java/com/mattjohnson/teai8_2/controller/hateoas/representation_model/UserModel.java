@@ -3,6 +3,7 @@ package com.mattjohnson.teai8_2.controller.hateoas.representation_model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.RepresentationModel;
 
 @Getter
@@ -16,5 +17,6 @@ public class UserModel extends RepresentationModel<UserModel> {
 
     private String email;
 
+    private CollectionModel<NoteModel> notes;
 
 }

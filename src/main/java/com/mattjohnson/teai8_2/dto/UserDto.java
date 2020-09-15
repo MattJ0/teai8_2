@@ -1,7 +1,6 @@
 package com.mattjohnson.teai8_2.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mattjohnson.teai8_2.entity.Note;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +27,7 @@ public class UserDto {
     private String email;
 
     @JsonIgnore
-    private Set<Note> noteSet;
+    private Set<NoteDto> noteSet;
 
 
 }
