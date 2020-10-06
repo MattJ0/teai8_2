@@ -54,7 +54,7 @@ public class NoteController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity addNote(@Validated @RequestBody NoteDto noteDto) {
         boolean add = noteService.addNote(noteDto);
         if (add) {
